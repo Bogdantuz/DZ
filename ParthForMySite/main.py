@@ -25,7 +25,7 @@ for i in bs.select_one('ul'):
 
 print()
 
-colors = ['green', 'blue', 'red', 'pink', 'purple', 'cyan']
+colors = ['green', 'blue', 'red', 'bright_magenta', 'purple', 'cyan']
 try:
     while True:
         for color in colors:
