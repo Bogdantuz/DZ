@@ -1,6 +1,5 @@
 import os
-import keyboard
-from pandas import DataFrame, read_excel, Int64Dtype
+from pandas import DataFrame, read_excel
 
 
 if os.path.exists('ExcelFile/Diary.xlsx'):
@@ -17,17 +16,9 @@ else:
         'Python': [100, 100, 100, 100],
         'English': [8, 9, 7, 8]
     }
-    df = DataFrame(base, dtype=Int64Dtype)
+    df = DataFrame(base)
 
 print(df.to_string())
-
-
-def go_out():
-    print('exit')
-    global end
-    end = True
-
-keyboard.add_hotkey('ctrl+c', go_out)
 
 
 def pdf():
@@ -51,22 +42,32 @@ def add(math = None, python = None, english=None):
 
 
 def drop(ind):
-    df.drop(ind, inplace=True)
+    df.drop(int(ind), inplace=True)
 
-def change(ind, colm, val):
+def change(ind = None, colm = None, val = None):
+    vals = {}
+    if not(ind or colm or val):
+        sysname = ['ind', 'colm', 'val']
+        realname = ['Index', 'Column', 'Value']
+        for i in realname:
+            inp = f"{input(f'{i}: ')}"
+            vals[sysname[realname.index(i)]] = f"{inp}"
+    else:
+        vals = {'ind': ind, 'colm': colm, 'val': val}
+        
     try:
-        colm = list(df.columns).index(colm)
+        vals['colm'] = list(df.columns).index(vals['colm'])
     except ValueError:
         pass
-    df.iloc[int(ind), int(colm)] = val
+    df.iloc[int(vals['ind']), int(vals['colm'])] = vals['val']
 
 
 print()
-end = False
-while not end:
+while True:
     try:
         text = input('>>> ')
     except KeyboardInterrupt:
+        print('exit')
         break
 
     if text == 'exit':
