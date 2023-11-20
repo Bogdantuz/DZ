@@ -18,8 +18,7 @@ client = gspread.authorize(credentials=creds)
 data = client.open_by_url(url)
 
 
-# workstem = data.add_worksheet('Home Work', 1000, 1000)
-workstem = data.get_worksheet(3)
+workstem = data.add_worksheet('Home Work', 1000, 1000)
 
 count = 2
 months = ['Cічень', 'Лютий', 'Березень',
