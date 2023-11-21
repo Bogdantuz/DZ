@@ -2,7 +2,6 @@ from json import load
 from logging import basicConfig, INFO
 from sys import stdout
 import asyncio
-from pprint import pprint
 
 from aiogram import Bot, Dispatcher, F
 from aiogram.types import CallbackQuery, Message
@@ -10,7 +9,7 @@ from aiogram.filters import CommandStart
 
 from parsing import ParsingFilm, ParsingMusic
 from bot_keyboards import inline, reply
-from createcode import create_callback
+from createcode import create_callback, new_callback
 
 
 class TelegramBot:
@@ -22,7 +21,7 @@ class TelegramBot:
         films_args[0], films_args[1], films_args[2]
     ).result
     musics_args = [
-        "https://freemusicarchive.org/search/?quicksearch=&search-genre=Jazz",
+        "https://freemusicarchive.org/search/?search-genre=Jazz",
         "div.w-full.flex.flex-col.gap-3.pt-3 > div",
         "a.font-bold"
     ]
@@ -45,7 +44,6 @@ class TelegramBot:
             TelegramBot.films_args[1],
             TelegramBot.films_args[2]
         ).result
-        pprint(TelegramBot.films)
         await mess.answer(
             "Який фільм хочеш дивитись?", reply_markup=inline(TelegramBot.films)
         )
@@ -57,7 +55,10 @@ class TelegramBot:
             TelegramBot.musics_args[1],
             TelegramBot.musics_args[2]
         ).result
-        pprint(TelegramBot.musics)
+        for music in TelegramBot.musics:
+            href = music['href']
+            exec(new_callback(href))
+
         await mess.answer(
             "Яку музику хочеш слухати?", reply_markup=inline(TelegramBot.musics)
         )
@@ -72,7 +73,7 @@ class TelegramBot:
         exec(create_callback(href))
 
     for music in musics:
-        href = music["href"]
+        href = music['href']
         exec(create_callback(href))
 
 

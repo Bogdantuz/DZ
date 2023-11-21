@@ -7,15 +7,23 @@ from aiogram.types import (
 
 
 def inline(films):
+    buttons = []
+
+    for film in films:
+        name = film['name']
+        href = film['href']
+        if not len(href) >= 65:
+            buttons.append(InlineKeyboardButton(
+                text=name,
+                callback_data=href
+            ))
+
     keyboard = InlineKeyboardMarkup(
         inline_keyboard=[
-            [InlineKeyboardButton(
-                text=film['name'],
-                callback_data=film['href']
-            )] for film in films
+            [i] for i in buttons
         ],
         resize_keyboard=True
-    )
+    )        
     return keyboard
 
 
